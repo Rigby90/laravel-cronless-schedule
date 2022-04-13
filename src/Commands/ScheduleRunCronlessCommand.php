@@ -46,7 +46,6 @@ class ScheduleRunCronlessCommand extends Command
     protected function outputHeader(): self
     {
         $this->comment("Will execute {$this->command} every {$this->frequency} seconds...");
-        $this->comment("Press enter to manually invoke a run...");
         $this->comment('-------------------------------------------------------');
         $this->comment('');
 
@@ -68,6 +67,13 @@ class ScheduleRunCronlessCommand extends Command
 
     protected function registerKeypressHandler(): self
     {
+        if(PHP_OS_FAMILY === 'Windows') {
+            return $this;
+        }
+
+        $this->comment("Press enter to manually invoke a run...");
+        $this->comment('');
+
         $stdio = new Stdio($this->loop);
 
         $stdio->setEcho(false);
